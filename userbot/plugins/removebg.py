@@ -21,7 +21,7 @@ async def remove_background(event):
     message_id = await reply_id(event)
     if event.reply_to_msg_id and not input_str:
         reply_message = await event.get_reply_message()
-        catevent = await edit_or_reply(event, "`Analysing this Image/Sticker...`")
+        catevent = await edit_or_reply(event, "`Analizando la imagen o el sticker...`")
         file_name = os.path.join(Config.TEMP_DIR, "rmbg.png")
         try:
             await event.client.download_media(reply_message, file_name)
@@ -29,12 +29,12 @@ async def remove_background(event):
             await edit_delete(catevent, f"`{str(e)}`", 5)
             return
         else:
-            await catevent.edit("`Removing Background of this media`")
+            await catevent.edit("`Eliminando el fondo de esta imagen`")
             file_name = convert_toimage(file_name)
             response = ReTrieveFile(file_name)
             os.remove(file_name)
     elif input_str:
-        catevent = await edit_or_reply(event, "`Removing Background of this media`")
+        catevent = await edit_or_reply(event, "`Eliminando el fondo de esta imagen`")
         response = ReTrieveURL(input_str)
     else:
         await edit_delete(
@@ -44,7 +44,7 @@ async def remove_background(event):
         )
         return
     contentType = response.headers.get("content-type")
-    remove_bg_image = "backgroundless.png"
+    remove_bg_image = "skueletor.png"
     if "image" in contentType:
         with open("backgroundless.png", "wb") as removed_bg_file:
             removed_bg_file.write(response.content)
@@ -52,7 +52,7 @@ async def remove_background(event):
         await edit_delete(catevent, f"`{response.content.decode('UTF-8')}`", 5)
         return
     if cmd == "srmbg":
-        file = convert_tosticker(remove_bg_image, filename="backgroundless.webp")
+        file = convert_tosticker(remove_bg_image, filename="skueletor.webp")
         await event.client.send_file(
             event.chat_id,
             file,
