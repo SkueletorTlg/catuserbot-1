@@ -15,7 +15,7 @@ thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
 async def _(event):
     if event.fwd_from:
         return
-    catevent = await edit_or_reply(event, "Processing ...")
+    catevent = await edit_or_reply(event, "Procesando...")
     if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
         os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
     if event.reply_to_msg_id:
@@ -34,7 +34,7 @@ async def _(event):
         # https://pillow.readthedocs.io/en/3.1.x/reference/Image.html#create-thumbnails
         os.remove(downloaded_file_name)
         await catevent.edit(
-            "Custom video/file thumbnail saved. This image will be used in the upload, till `.clearthumb`."
+            "✅ Miniatura personalizada guardado. Esta imagen se utilizará en el archivo, hasta que escribas `.clearthumb`."
         )
     else:
         await catevent.edit("Reply to a photo to save custom thumbnail")
@@ -48,8 +48,8 @@ async def _(event):
     if os.path.exists(thumb_image_path):
         os.remove(thumb_image_path)
     else:
-        await edit_or_reply(event, "No thumbnail is set to clear")
-    await edit_or_reply(event, "✅ Custom thumbnail cleared succesfully.")
+        await edit_or_reply(event, "Ninguna miniatura está configurada para borrar")
+    await edit_or_reply(event, "✅ Miniatura personalizada borrada con éxito.")
 
 
 @bot.on(admin_cmd(pattern="getthumb$"))
@@ -77,7 +77,7 @@ async def _(event):
         except Exception as e:
             await edit_or_reply(event, str(e))
     elif os.path.exists(thumb_image_path):
-        caption_str = "Currently Saved Thumbnail"
+        caption_str = "✅ Miniatura guardada actualmente"
         await event.client.send_file(
             event.chat_id,
             thumb_image_path,
@@ -88,7 +88,7 @@ async def _(event):
         )
         await edit_or_reply(event, caption_str)
     else:
-        await edit_or_reply(event, "Reply `.gethumbnail` as a reply to a media")
+        await edit_or_reply(event, "Responda `.gethumbnail` a una imagen o video para guardarla como miniatura personalizada.")
 
 
 CMD_HELP.update(
