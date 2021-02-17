@@ -61,7 +61,7 @@ async def fastpurger(event):
     await event.delete()
     hi = await event.client.send_message(
         event.chat_id,
-        "`Fast purge complete!\nPurged " + str(count) + " messages.`",
+        "`¡Eliminación de mensajes rápida completada correctamente!\nEn total se eliminaron " + str(count) + " mensajes.`",
     )
     if BOTLOG:
         await event.client.send_message(
