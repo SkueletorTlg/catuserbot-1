@@ -9,7 +9,7 @@ async def _(event):
     reply_to_id = event.message
     if event.reply_to_msg_id:
         reply_to_id = await event.get_reply_message()
-    mentions = "@all"
+    mentions = "@holi"
     chat = await event.get_input_chat()
     async for x in event.client.iter_participants(chat, 100):
         mentions += f"[\u2063](tg://user?id={x.id})"
@@ -24,7 +24,7 @@ async def _(event):
         return
     reply_to_id = await reply_id(event)
     input_str = event.pattern_match.group(1)
-    mentions = input_str or "@all"
+    mentions = input_str or "@holi"
     chat = await event.get_input_chat()
     async for x in event.client.iter_participants(chat, 100):
         mentions += f"[\u2063](tg://user?id={x.id})"
@@ -37,7 +37,7 @@ async def _(event):
 async def _(event):
     if event.fwd_from:
         return
-    mentions = "@admin: **Spam Spotted**"
+    mentions = "@admin: **Spam detectado**"
     chat = await event.get_input_chat()
     reply_to_id = await reply_id(event)
     async for x in event.client.iter_participants(
