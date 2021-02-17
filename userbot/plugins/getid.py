@@ -15,17 +15,17 @@ async def _(event):
         try:
             if p.first_name:
                 return await edit_or_reply(
-                    event, f"The id of the user `{input_str}` is `{p.id}`"
+                    event, f"El ID del usuario `{input_str}` es `{p.id}`"
                 )
         except Exception:
             try:
                 if p.title:
                     return await edit_or_reply(
-                        event, f"The id of the chat/channel `{p.title}` is `{p.id}`"
+                        event, f"El id del chat o canal `{p.title}` es `{p.id}`"
                     )
             except Exception as e:
                 LOGS.info(str(e))
-        await edit_or_reply(event, "`Either give input as username or reply to user`")
+        await edit_or_reply(event, "`Escribe el nombre del usuario o responde al mensaje de algún usuario para obtener su ID`")
     elif event.reply_to_msg_id:
         await event.get_input_chat()
         r_msg = await event.get_reply_message()
@@ -33,15 +33,15 @@ async def _(event):
             bot_api_file_id = pack_bot_file_id(r_msg.media)
             await edit_or_reply(
                 event,
-                f"**Current Chat ID : **`{str(event.chat_id)}`\n**From User ID: **`{str(r_msg.sender_id)}`\n**Media File ID: **`{bot_api_file_id}`",
+                f"**ID del chat actual: **`{str(event.chat_id)}`\n**ID del usuario: **`{str(r_msg.sender_id)}`\n**ID del archivo: **`{bot_api_file_id}`",
             )
         else:
             await edit_or_reply(
                 event,
-                f"**Current Chat ID : **`{str(event.chat_id)}`\n**From User ID: **`{str(r_msg.sender_id)}`",
+                f"**ID del chat actual: **`{str(event.chat_id)}`\n**ID del usuario: **`{str(r_msg.sender_id)}`",
             )
     else:
-        await edit_or_reply(event, f"**Current Chat ID : **`{str(event.chat_id)}`")
+        await edit_or_reply(event, f"**ID del chat actual: **`{str(event.chat_id)}`")
 
 
 CMD_HELP.update(
