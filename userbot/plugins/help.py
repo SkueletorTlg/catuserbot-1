@@ -19,13 +19,13 @@ async def cmd_list(event):
     input_str = event.pattern_match.group(1)
     if input_str == "text":
         string = (
-            "Total {count} commands found in {plugincount} plugins of catuserbot\n\n"
+            "En total hay {count} comandos encontrados en los {plugincount} plugins del bot de [Skueletor](t.me/DKzippO)\n\n"
         )
         catcount = 0
         plugincount = 0
         for i in sorted(CMD_LIST):
             plugincount += 1
-            string += f"{plugincount}) Commands found in Plugin " + i + " are \n"
+            string += f"{plugincount}) Comandos encontrados en el plugin " + i + " are \n"
             for iter_list in CMD_LIST[i]:
                 string += "    " + str(iter_list)
                 string += "\n"
@@ -42,14 +42,14 @@ async def cmd_list(event):
                 .get("key")
             )
             url = f"https://nekobin.com/{key}"
-            reply_text = f"**All commands of the catuserbot can be seen [here]({url})**"
+            reply_text = f"**Se pueden ver todos los comandos del bot [aquí]({url})**"
             await event.edit(reply_text)
             return
         await event.edit(string.format(count=catcount, plugincount=plugincount))
         return
     if input_str:
         if input_str in CMD_LIST:
-            string = "<b>{count} Commands found in plugin {input_str}:</b>\n\n"
+            string = "<b>{count} Comandos que se encuentran en el plugin {input_str}:</b>\n\n"
             catcount = 0
             for i in CMD_LIST[input_str]:
                 string += f"  •  <code>{i}</code>"
@@ -64,17 +64,17 @@ async def cmd_list(event):
             await event.delete()
     else:
         if HELPTYPE is True:
-            help_string = f"Userbot Helper. Provided by {ALIVE_NAME} to reveal all the plugins\
-                          \nCheck `.help plugin name` for commands, in case popup doesn't appear.\
-                          \nCheck `.info plugin name` for usage of thoose plugins and commands"
+            help_string = f"Ayuda del bot de {ALIVE_NAME}.\
+                          \nRevisa `.help nombre del plugin` para ver los comandos, en caso de que no aparezca en el botón.\
+                          \nRevisa `.info nombre del plugin` para el uso de esos plugins y comandos"
             tgbotusername = Config.TG_BOT_USER_NAME_BF_HER
             results = await event.client.inline_query(tgbotusername, help_string)
             await results[0].click(event.chat_id, reply_to=reply_to_id, hide_via=True)
             await event.delete()
         else:
-            string = "<b>Please specify which plugin do you want help for !!\
-                \nNumber of plugins : </b><code>{count}</code>\
-                \n<b>Usage:</b> <code>.help plugin name</code> \n\n"
+            string = "<b>Por favor, especifique para qué complemento desea obtener ayuda.\
+                \nNúmero de plugins: </b><code>{count}</code>\
+                \n<b>Uso:</b> <code>.help nombre del plugin</code> \n\n"
             catcount = 0
             for i in sorted(CMD_LIST):
                 string += "◆ " + f"<code>{str(i)}</code>"
