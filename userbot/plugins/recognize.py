@@ -14,13 +14,13 @@ async def _(event):
         return
     reply_message = await event.get_reply_message()
     if not reply_message.media:
-        await edit_or_reply(event, "reply to media file")
+        await edit_or_reply(event, "responda a alguna imagen")
         return
-    chat = "@Rekognition_Bot"
+    chat = "Hecho por @DKzippO"
     if reply_message.sender.bot:
         await event.edit("Reply to actual users message.")
         return
-    cat = await edit_or_reply(event, "recognizeing this media")
+    cat = await edit_or_reply(event, "reconociendo esta imagen...")
     async with event.client.conversation(chat) as conv:
         try:
             response = conv.wait_event(
@@ -29,7 +29,7 @@ async def _(event):
             await event.client.forward_messages(chat, reply_message)
             response = await response
         except YouBlockedUserError:
-            await cat.edit("unblock @Rekognition_Bot and try again")
+            await cat.edit("Desbloquea el bot @Rekognition_Bot e intente nuevamente")
             return
         if response.text.startswith("See next message."):
             response = conv.wait_event(
@@ -39,7 +39,7 @@ async def _(event):
             msg = response.message.message
             await cat.edit(msg)
         else:
-            await cat.edit("sorry, I couldnt find it")
+            await cat.edit("lo siento, no pude encontrar nada")
 
         await event.client.send_read_acknowledge(conv.chat_id)
 
