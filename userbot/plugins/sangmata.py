@@ -31,7 +31,7 @@ async def _(event):
     else:
         uid = reply_message.sender_id
     chat = "@SangMataInfo_bot"
-    catevent = await edit_or_reply(event, "`Processing...`")
+    catevent = await edit_or_reply(event, "`Procesando...`")
     async with event.client.conversation(chat) as conv:
         try:
             await conv.send_message(f"/search_id {uid}")
@@ -46,9 +46,9 @@ async def _(event):
             responses.append(response.text)
         await event.client.send_read_acknowledge(conv.chat_id)
     if not responses:
-        await edit_delete(catevent, "`bot can't fetch results`")
+        await edit_delete(catevent, "`el bot no puede obtener resultados`")
     if "No records found" in responses:
-        await edit_delete(catevent, "`The user doesn't have any record`")
+        await edit_delete(catevent, "`El usuario no tiene ningún registro`")
     names, usernames = await sanga_seperator(responses)
     cmd = event.pattern_match.group(1)
     if cmd == "sg":
