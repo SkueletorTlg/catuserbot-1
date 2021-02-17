@@ -20,13 +20,13 @@ auth_url = r["auth_url"]
 async def _(event):
     if event.fwd_from:
         return
-    catevent = await edit_or_reply(event, "`processing........`")
+    catevent = await edit_or_reply(event, "`Procesando...`")
     if not os.path.isdir(Config.TEMP_DIR):
         os.makedirs(Config.TEMP_DIR)
     if BOTLOG:
         await event.client.send_message(
             BOTLOG_CHATID,
-            "Created New Telegraph account {} for the current session. \n**Do not give this url to anyone, even if they say they are from Telegram!**".format(
+            "Se creó una nueva cuenta de Telegraph {} para la sesión actual. \n ** ¡No le dé esta URL a nadie, incluso si dice que es de Telegram!**".format(
                 auth_url
             ),
         )
@@ -42,7 +42,7 @@ async def _(event):
             end = datetime.now()
             ms = (end - start).seconds
             await catevent.edit(
-                f"`Downloaded to {downloaded_file_name} in {ms} seconds.`"
+                f"`Descargado en {downloaded_file_name} en {ms} segundos.`"
             )
             if downloaded_file_name.endswith((".webp")):
                 resize_image(downloaded_file_name)
@@ -50,15 +50,15 @@ async def _(event):
                 start = datetime.now()
                 media_urls = upload_file(downloaded_file_name)
             except exceptions.TelegraphException as exc:
-                await catevent.edit("**Error : **" + str(exc))
+                await catevent.edit("**Error: **" + str(exc))
                 os.remove(downloaded_file_name)
             else:
                 end = datetime.now()
                 ms_two = (end - start).seconds
                 os.remove(downloaded_file_name)
                 await catevent.edit(
-                    "**link : **[telegraph](https://telegra.ph{})\
-                    \n**Time Taken : **`{} seconds.`".format(
+                    "** Enlace: **[telegraph](https://telegra.ph{})\
+                    \n**Tiempo tomado: **`{} segundos.`".format(
                         media_urls[0], (ms + ms_two)
                     ),
                     link_preview=True,
@@ -88,13 +88,13 @@ async def _(event):
             ms = (end - start).seconds
             cat = f"https://telegra.ph/{response['path']}"
             await catevent.edit(
-                f"**link : ** [telegraph]({cat})\
-                 \n**Time Taken : **`{ms} seconds.`",
+                f"**Enlace: ** [telegraph]({cat})\
+                 \n**Tiempo tomado: **`{ms} segundos.`",
                 link_preview=True,
             )
     else:
         await catevent.edit(
-            "`Reply to a message to get a permanent telegra.ph link. (Inspired by @ControllerBot)`",
+            "`Responda a un mensaje para obtener un enlace telegra.ph permanente. (Inspirado en @ControllerBot)`",
         )
 
 
