@@ -17,9 +17,9 @@ from . import name_dl, song_dl, video_dl, yt_search
 # =========================================================== #
 #                           STRINGS                           #
 # =========================================================== #
-SONG_SEARCH_STRING = "<code>wi8..! I am finding your song....</code>"
-SONG_NOT_FOUND = "<code>Sorry !I am unable to find any song like that</code>"
-SONG_SENDING_STRING = "<code>yeah..! i found something wi8..🥰...</code>"
+SONG_SEARCH_STRING = "<code>Estoy buscando la canción :D</code>"
+SONG_NOT_FOUND = "<code>Lo siento, no puedo encontrar una canción como esa</code>"
+SONG_SENDING_STRING = "<code>He encontrado algo 🥰</code>"
 SONGBOT_BLOCKED_STRING = "<code>Please unblock @songdl_bot and try again</code>"
 # =========================================================== #
 #                                                             #
@@ -39,14 +39,14 @@ async def _(event):
         if reply.message:
             query = reply.message
     else:
-        await edit_or_reply(event, "`What I am Supposed to find `")
+        await edit_or_reply(event, "`¿Qué se supone que debo encontrar? `")
         return
     cat = base64.b64decode("QUFBQUFGRV9vWjVYVE5fUnVaaEtOdw==")
-    catevent = await edit_or_reply(event, "`wi8..! I am finding your song....`")
+    catevent = await edit_or_reply(event, "`<code>Estoy buscando la canción :D</code>`")
     video_link = await yt_search(str(query))
     if not url(video_link):
         return await catevent.edit(
-            f"Sorry!. I can't find any related video/audio for `{query}`"
+            f"¡Perdón!. No encuentro ningún video/audio relacionado con `{query}`"
         )
     cmd = event.pattern_match.group(1)
     if cmd == "song":
@@ -63,10 +63,10 @@ async def _(event):
         pass
     stderr = (await _catutils.runcmd(song_cmd))[1]
     if stderr:
-        return await catevent.edit(f"**Error :** `{stderr}`")
+        return await catevent.edit(f"**Error:** `{stderr}`")
     catname, stderr = (await _catutils.runcmd(name_cmd))[:2]
     if stderr:
-        return await catevent.edit(f"**Error :** `{stderr}`")
+        return await catevent.edit(f"**Error:** `{stderr}`")
     # stderr = (await runcmd(thumb_cmd))[1]
     catname = os.path.splitext(catname)[0]
     # if stderr:
@@ -74,9 +74,9 @@ async def _(event):
     song_file = Path(f"{catname}.mp3")
     if not os.path.exists(song_file):
         return await catevent.edit(
-            f"Sorry!. I can't find any related video/audio for `{query}`"
+            f"¡Perdón!. No encuentro ningún video/audio relacionado con `{query}`"
         )
-    await catevent.edit("`yeah..! i found something wi8..🥰`")
+    await catevent.edit("`Uuuu, he encontrado algo 🥰`")
     catthumb = Path(f"{catname}.jpg")
     if not os.path.exists(catthumb):
         catthumb = Path(f"{catname}.webp")
@@ -213,7 +213,7 @@ async def cat_song_fetcer(event):
         await event.client.send_file(
             event.chat_id,
             music,
-            caption=f"<b>➥ Song :- <code>{song}</code></b>",
+            caption=f"<b>➥ Canción:- <code>{song}</code></b>\n\nHecho por <b>Skueletor</b>",
             parse_mode="html",
             reply_to=reply_id_,
         )
