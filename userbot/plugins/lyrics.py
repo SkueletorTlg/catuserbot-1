@@ -13,7 +13,7 @@ GENIUS = os.environ.get("GENIUS_API_TOKEN", None)
 async def _(event):
     if event.fwd_from:
         return
-    catevent = await edit_or_reply(event, "wi8..! I am searching your lyrics....`")
+    catevent = await edit_or_reply(event, "`Estoy buscando las letras de esa canción, por favor espere un momento.`")
     reply_to_id = event.message.id
     if event.reply_to_msg_id:
         reply_to_id = event.reply_to_msg_id
@@ -31,9 +31,9 @@ async def _(event):
         if song.lyrics:
             reply = song.format()
         else:
-            reply = "Couldn't find any lyrics for that song! try with artist name along with song if still doesnt work try `.glyrics`"
+            reply = "¡No se pudo encontrar la letra de esa canción! intente con el nombre del artista junto con la canción si aún no funciona intente `.glyrics`"
     else:
-        reply = "lyrics not found! try with artist name along with song if still doesnt work try `.glyrics`"
+        reply = "¡letra no encontrada! intente con el nombre del artista junto con la canción si aún no funciona intente `.glyrics`"
     if len(reply) > Config.MAX_MESSAGE_SIZE_LIMIT:
         with io.BytesIO(str.encode(reply)) as out_file:
             out_file.name = "lyrics.text"
@@ -97,7 +97,7 @@ async def lyrics(lyric):
     if len(songs.lyrics) > 4096:
         await catevent.edit("`Lyrics is too big, view the file to see it.`")
         with open("lyrics.txt", "w+") as f:
-            f.write(f"Search query: \n{artist} - {song}\n\n{songs.lyrics}")
+            f.write(f"Letra de la canción encontrada: \n{artist} - {song}\n\n{songs.lyrics}")
         await lyric.client.send_file(
             lyric.chat_id,
             "lyrics.txt",
@@ -106,7 +106,7 @@ async def lyrics(lyric):
         os.remove("lyrics.txt")
     else:
         await catevent.edit(
-            f"**Search query**: \n`{artist} - {song}`\n\n```{songs.lyrics}```"
+            f"**Letra de la canción encontrada**: \n`{artist} - {song}`\n\n```{songs.lyrics}```"
         )
     return
 
