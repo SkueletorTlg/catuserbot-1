@@ -56,7 +56,7 @@ async def subprocess_run(megadl, cmd):
 @bot.on(admin_cmd(outgoing=True, pattern=r"mega(?: |$)(.*)"))
 @bot.on(sudo_cmd(allow_sudo=True, pattern=r"mega(?: |$)(.*)"))
 async def mega_downloader(megadl):
-    catevent = await edit_or_reply(megadl, "`Collecting information...`")
+    catevent = await edit_or_reply(megadl, "`Recolectando información...`")
     if not os.path.isdir(TMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TMP_DOWNLOAD_DIRECTORY)
     msg_link = await megadl.get_reply_message()
@@ -73,10 +73,10 @@ async def mega_downloader(megadl):
         if "file" in link:
             link = link.replace("#", "!").replace("file/", "#!")
         elif "folder" in link or "#F" in link or "#N" in link:
-            await catevent.edit("`folder download support are removed...`")
+            await catevent.edit("`el archivo que estás intentando descargar no existe...`")
             return
     except IndexError:
-        await catevent.edit("`MEGA.nz link not found...`")
+        await catevent.edit("`Enlace no encontrado de MEGA.nz...`")
         return None
     cmd = f"bin/megadown -q -m {link}"
     result = await subprocess_run(catevent, cmd)
@@ -124,13 +124,13 @@ async def mega_downloader(megadl):
         diff = time.time() - start
         try:
             current_message = (
-                f"**➥file name : **`{file_name}`\n\n"
-                "**➥Status**\n"
+                f"**➥Nombre del archivo: **`{file_name}`\n\n"
+                "**➥Estado**\n"
                 f"{progress_str}\n"
-                f"`{humanbytes(downloaded)}` of `{humanbytes(total_length)}`"
+                f"`{humanbytes(downloaded)}` de `{humanbytes(total_length)}`"
                 f" @ `{speed}`\n"
-                f"**➥ETA -> **`{time_formatter(estimated_total_time)}`\n"
-                f"**➥ Duration -> **`{time_formatter(round(diff))}`"
+                f"**➥Tiempo estimado -> **`{time_formatter(estimated_total_time)}`\n"
+                f"**➥ Duración -> **`{time_formatter(round(diff))}`"
             )
             if round(diff % 15.00) == 0 and (
                 display_message != current_message or total_length == downloaded
@@ -160,9 +160,9 @@ async def mega_downloader(megadl):
             return None
         else:
             await catevent.edit(
-                f"**➥ file name : **`{file_name}`\n\n"
-                f"**➥ Successfully downloaded in : ** `{file_path}`.\n"
-                f"**➥ Download took :** {time_formatter(download_time)}."
+                f"**➥ Nombre del archivo: **`{file_name}`\n\n"
+                f"**➥ Archivo descargado correctamente en: ** `{file_path}`.\n"
+                f"**➥ La descarga tomó:** {time_formatter(download_time)}."
             )
             return None
     else:
