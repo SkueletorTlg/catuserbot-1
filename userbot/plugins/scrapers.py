@@ -22,10 +22,10 @@ async def wiki(wiki_q):
     try:
         summary(match)
     except DisambiguationError as error:
-        await edit_or_reply(wiki_q, f"Disambiguated page found.\n\n{error}")
+        await edit_or_reply(wiki_q, f"Se encontró una página sin ambigüedades.\n\n{error}")
         return
     except PageError as pageerror:
-        await edit_or_reply(wiki_q, f"Page not found.\n\n{pageerror}")
+        await edit_or_reply(wiki_q, f"Página no encontrada.\n\n{pageerror}")
         return
     result = summary(match)
     if len(result) >= 4096:
@@ -33,27 +33,27 @@ async def wiki(wiki_q):
             file.write(result)
         await wiki_q.client.send_file(
             wiki_q.chat_id,
-            "output.txt",
+            "skuel.txt",
             reply_to=wiki_q.id,
-            caption="`Output too large, sending as file`",
+            caption="`Página con descripción demasiado grande, enviando como archivo.`",
         )
         await wiki_q.delete()
         if os.path.exists("output.txt"):
             os.remove("output.txt")
         return
     await edit_or_reply(
-        wiki_q, "**Search:**\n`" + match + "`\n\n**Result:**\n" + result
+        wiki_q, "**Búsqueda:**\n`" + match + "`\n\n**Resultado:**\n" + result
     )
     if BOTLOG:
         await wiki_q.client.send_message(
-            BOTLOG_CHATID, f"Wiki query `{match}` was executed successfully"
+            BOTLOG_CHATID, f"La consulta de Wiki `{match}` se ejecutó correctamente"
         )
 
 
 @bot.on(admin_cmd(pattern="imdb (.*)", outgoing=True))
 @bot.on(sudo_cmd(pattern="imdb (.*)", allow_sudo=True))
 async def imdb(e):
-    catevent = await edit_or_reply(e, "`searching........")
+    catevent = await edit_or_reply(e, "`Buscando...")
     try:
         movie_name = e.pattern_match.group(1)
         remove_space = movie_name.split(" ")
@@ -82,22 +82,22 @@ async def imdb(e):
         moviecredits = soup.findAll("div", "credit_summary_item")
         director = moviecredits[0].a.text
         if len(moviecredits) == 1:
-            writer = "Not available"
-            stars = "Not available"
+            writer = "No disponible"
+            stars = "No disponible"
         elif len(moviecredits) > 2:
             writer = moviecredits[1].a.text
             actors = [x.text for x in moviecredits[2].findAll("a")]
             actors.pop()
             stars = actors[0] + "," + actors[1] + "," + actors[2]
         else:
-            writer = "Not available"
+            writer = "No disponible"
             actors = [x.text for x in moviecredits[1].findAll("a")]
             actors.pop()
             stars = actors[0] + "," + actors[1] + "," + actors[2]
         if soup.find("div", "inline canwrap"):
             story_line = soup.find("div", "inline canwrap").findAll("p")[0].text
         else:
-            story_line = "Not available"
+            story_line = "No disponible"
         info = soup.findAll("div", "txt-block")
         if info:
             mov_country = []
@@ -116,25 +116,25 @@ async def imdb(e):
             mov_rating = "Not available"
         await catevent.edit(
             "<a href=" + poster + ">&#8203;</a>"
-            "<b>Title : </b><code>"
+            "<b>Título: </b><code>"
             + mov_title
             + "</code>\n<code>"
             + mov_details
-            + "</code>\n<b>Rating : </b><code>"
+            + "</code>\n<b>Clasificación: </b><code>"
             + mov_rating
-            + "</code>\n<b>Country : </b><code>"
+            + "</code>\n<b>Ciudad: </b><code>"
             + mov_country[0]
-            + "</code>\n<b>Language : </b><code>"
+            + "</code>\n<b>Idioma: </b><code>"
             + mov_language[0]
-            + "</code>\n<b>Director : </b><code>"
+            + "</code>\n<b>Director: </b><code>"
             + director
-            + "</code>\n<b>Writer : </b><code>"
+            + "</code>\n<b>Escritor: </b><code>"
             + writer
-            + "</code>\n<b>Stars : </b><code>"
+            + "</code>\n<b>Estrellas: </b><code>"
             + stars
-            + "</code>\n<b>IMDB Url : </b>"
+            + "</code>\n<b>Enlace de IMDB: </b>"
             + mov_link
-            + "\n<b>Story Line : </b>"
+            + "\n<b>Sinopsis: </b>"
             + story_line,
             link_preview=True,
             parse_mode="HTML",
