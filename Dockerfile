@@ -1,4 +1,4 @@
-FROM sandy1709/catuserbot:latest
+FROM SkueletorTlg/catuserbot-1:latest
 
 #clonning repo 
 RUN git clone https://github.com/SkueletorTlg/catuserbot-1.git /root/userbot
